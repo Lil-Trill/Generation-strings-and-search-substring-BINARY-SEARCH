@@ -56,27 +56,44 @@ internal class Program
         BinarySearch.Sort(ref testList);
         PrintConsole(testList);
         BinarySearch.Search(testList, "hamlo");
-        // Console.WriteLine(BinarySearch.Search(testList, "hamlo"));
-        long[] arr = { 1,2,3, 4, 4, 6 };
-        
-        Console.WriteLine(BinSearchLeftBorder(arr, 4, 0, arr.Length));
+        Console.WriteLine(BinarySearch.Search(testList, "hamlo"));
+
+        Console.WriteLine(Convert.ToInt32('g'));
+        int res = BinarySearch.LeftBorder(testList, Convert.ToInt32('g'), 0, testList.Count);
+        Console.WriteLine(res);
+        long[] arr = { 1,2,2,2,2,2,2,3,3,3,5,5,5,5,6};
 
     }
     public static int BinSearchLeftBorder(long[] array, long value, int left, int right)
     {
-        if (array.Length == 0) return -1;
+        //начало базиса
+        if (array.Length == 0 || value < array[0] || value > array[array.Length - 1]) return -1;
+
         if (array[left + 1] >= value || left + 1 >= right || right == left)
         {
-            if (value < array[0]) return -1;
             if (array[left + 1] != value && array[left] != value) return -1;
 
             return left;
         }
-        if (value > array[array.Length - 1]) return -1;
-        var m = (left + right) / 2;
-        if (array[m] < value)
-            return BinSearchLeftBorder(array, value, m, right);
-        return BinSearchLeftBorder(array, value, left, m);
+        //конец базиса
+        int mid = (left + right) / 2;
+        if (array[mid] < value)
+            return BinSearchLeftBorder(array, value, mid, right);
+        return BinSearchLeftBorder(array, value, left, mid);
+    }
+    public static int BinSearchRightBorder(long[] array, long value, int right, int left)
+    {
+        //начало базиса
+        if (array.Length == 0 || value < array[0] || value > array[array.Length - 1]) return -1;
+        if (array[right - 1] <= value || right - 1 <= left || right == left)
+        {
+            if (array[right - 1] != value && array[right] != value) return -1;
+
+            return right;
+        }
+        int mid = (left + right) / 2;
+        if (array[mid] > value) return BinSearchRightBorder(array, value, mid, left);
+        return BinSearchRightBorder(array, value, right, mid);
     }
 }
 class LinerSearch
@@ -137,5 +154,22 @@ class BinarySearch
         }
 
         return "искомой строки не нашлось увы и ах";
+    }
+
+    public static int LeftBorder(List<string>array, int value, int left, int right)
+    {
+        if (array.Count == 0 || value < Convert.ToInt32(array[0][0]) || value > Convert.ToInt32(array[array.Count - 1][0])) return -1;
+
+        if (array[left + 1][0] >= value || left + 1 >= right || right == left)
+        {
+            if (array[left + 1][0] != value && array[left][0] != value) return -1;
+
+            return left;
+        }
+        //конец базиса
+        int mid = (left + right) / 2;
+        if (array[mid][0] < value)
+            return LeftBorder(array, value, mid, right);
+        return LeftBorder(array, value, left, mid);
     }
 }
